@@ -10,6 +10,9 @@ import { OpportunityComponent } from './opportunity/opportunity.component';
 import { CustomerComponent } from './customer/customer.component';
 import { PlanComponent } from './plan/plan.component';
 import { HeaderComponent } from './header/header.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { PersonComponent } from './person/person.component';
 
 @NgModule({
   declarations: [
@@ -20,11 +23,14 @@ import { HeaderComponent } from './header/header.component';
     OpportunityComponent,
     CustomerComponent,
     PlanComponent,
-    HeaderComponent
+    HeaderComponent,
+    PersonComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
