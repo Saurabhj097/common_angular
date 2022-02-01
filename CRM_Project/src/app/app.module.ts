@@ -31,9 +31,11 @@ import { MarkAsteriskDirective } from './directives/mark-asterisk.directive';
   imports: [
     BrowserModule,
     AppRoutingModule,
+
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
