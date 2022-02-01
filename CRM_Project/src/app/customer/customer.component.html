@@ -91,13 +91,13 @@
 
                             <!-- <td *ngFor="let person of customer.person"></td> -->
                             <td> {{customer.customer_id}}</td>
-
-
                             <td>{{customer.plan.plan_name}}</td>
                             <td>{{customer.person.first_name}}</td>
 
                             <!-- <td>$254</td> -->
-                            <td> <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i
+                            <td> <a href="#" class="edit" title="Edit" data-bs-toggle="modal"
+                                    data-bs-target="#updateModal"
+                                    (click)="onFetchId(customer.customer_id, updateForm)"><i
                                         class="material-icons">&#xE254;</i></a>
                                 <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i
                                         class="material-icons">&#xE872;</i></a>
@@ -155,7 +155,8 @@
                                 <label for="employee">Managed By</label>
                                 <select class="form-select" aria-label="Select Plan" ngModel id="employee"
                                     name="emp_id">
-                                    <option [ngValue]="1" *ngFor="let person of persons"> {{person.first_name}}
+                                    <option *ngFor="let emp of employees" [ngValue]="emp.emp_id">
+                                        {{emp.person.first_name}}
                                     </option>
 
 
@@ -167,11 +168,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="opportunity">Opportunity id</label>
+                            <label for="opportunity">Opportunity Name</label>
                             <select class="form-select" aria-label="Select Plan" ngModel id="opportunity"
                                 name="opportunity_id">
                                 <option *ngFor="let opp of opportunity" [ngValue]="opp.opportunity_id">
-                                    {{opp.opportunity_id}}</option>
+                                    {{opp.person.first_name}}</option>
 
                             </select>
 
@@ -192,37 +193,100 @@
     </div>
 
 
-    <!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}" *ngFor="let form of formData"> -->
-    <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <!--Update Modal-->
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Model Title</h4>
-                    <form #customerForm="ngForm" (ngSubmit)="onSubmit(customerForm)">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Customer Details</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="updateForm">
+                        <div>
+                            <div class="form-group">
+                                <label for="customer">Select Customer</label>
+                                <select class="form-select" aria-label="Select customer" id="customer_id" required
+                                    name="customer_id" formControlName="customer_id">
+                                    <option *ngFor="let customer of customers" [ngValue]="customer.customer_id">
+                                        {{customer.customer_id}}
+                                    </option>
+
+                                </select>
+
+
+                            </div>
+                        </div>
+                        <!-- 
+                        <div *ngIf="customer_id.invalid && (customer_id.dirty || customer_id.touched)" class="alert">
+
+                            <div *ngIf="customer_id.errors?.['required']">
+                                Name is required.
+
+                            </div>
+                        </div> -->
+
                         <div class="form-group">
                             <label for="name">Plan Selected</label>
-                            <input type="text" class="form-control" id="plan" aria-describedby="plan"
-                                placeholder="Enter Plan" name="abc">
+
+                            <select class="form-select" aria-label="Select Plan" id="plan_id" name="plan_id"
+                                formControlName="plan_id">
+                                <!-- <option *ngFor="let customer of customers" [defaultSelected]=true
+                                    [value]="customer.plan.plan_id">{{customer.plan.plan_id}}
+                                </option> -->
+                                <option *ngFor="let plan of plans" [ngValue]="plan.plan_id">{{plan.plan_name}}
+                                </option>
+
+
+                            </select>
 
                         </div>
+                        <!-- <div *ngFor="let emp of employees"> -->
+                        <div>
+                            <div class="form-group">
+                                <label for="employee">Managed By</label>
+                                <select class="form-select" aria-label="Select Employee" id="emp_id" name="emp_id"
+                                    formControlName="emp_id">
+                                    <option *ngFor="let emp of employees" [ngValue]="emp.emp_id">
+                                        {{emp.person.first_name}}
+                                    </option>
+
+
+
+                                </select>
+
+
+                            </div>
+                        </div>
+
                         <div class="form-group">
-                            <label for="employee">Managed By</label>
-                            <input type="text" class="form-control" id="employee" aria-describedby="employee"
-                                placeholder="Enter Managed By" name="abc">
+                            <label for="opportunity">Opportunity Name</label>
+                            <select class="form-select" aria-label="Select Opportunity" id="opportunity_id"
+                                name="opportunity_id" formControlName="opportunity_id">
+                                <option *ngFor="let opp of opportunity" [ngValue]="opp.opportunity_id">
+                                    {{opp.person.first_name}}</option>
+
+                            </select>
+
 
                         </div>
-
-
-                        <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
 
-                    <button type="button" class="close" aria-label="Close" (click)="onCloseHandled()"><span
-                            aria-hidden="true">&times;</span></button>
+                    <button type="submit" class="btn btn-primary" (click)="onSubmit()"
+                        data-bs-dismiss="modal">Submit</button>
+
+                    <!-- <button type=" button" class="btn btn-primary">Save changes</button> -->
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
 
 

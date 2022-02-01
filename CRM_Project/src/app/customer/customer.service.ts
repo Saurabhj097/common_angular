@@ -15,6 +15,8 @@ export class CustomerService {
 
 
 
+
+
   constructor(private httpClient: HttpClient) { }
 
   getCustomers(): Observable<any> {
@@ -26,6 +28,15 @@ export class CustomerService {
 
   }
 
+  getCustomerId(customer_id: any): Observable<any> {
+    // this.httpClient.get(this.customerurl).pipe(map(res => console.log(res)));
+    // console.log('test');
+
+    return this.httpClient.get(`${this.customerurl}/${customer_id}`)
+
+
+  }
+
 
 
   createCustomer(customerData: any): Observable<any> {
@@ -33,6 +44,14 @@ export class CustomerService {
     return this.httpClient.post(this.customerurl, customerData);
 
   }
+
+  updateCustomer(cid: any, customerData: any): Observable<any> {
+    //console.log(customerData);
+    return this.httpClient.put(`${this.customerurl}/${cid}`, customerData);
+
+  }
+
+
 
 
 }
