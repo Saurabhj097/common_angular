@@ -50,7 +50,7 @@ export class CustomerComponent implements OnInit {
   }
   public setCustomerFormRules() {
     this.updateForm = this.fb.group({
-      customer_id: ['', [Validators.required]],
+      customer_id: [{ value: null, disabled: true }, [Validators.required]],
       plan_id: ['', [Validators.required]],
       emp_id: ['', [Validators.required]],
       opportunity_id: ['', [Validators.required]]

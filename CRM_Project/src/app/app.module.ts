@@ -13,6 +13,7 @@ import { HeaderComponent } from './header/header.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PersonComponent } from './person/person.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MarkAsteriskDirective } from './directives/mark-asterisk.directive';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     PlanComponent,
     HeaderComponent,
     PersonComponent,
+    MarkAsteriskDirective,
   ],
   imports: [
     BrowserModule,
