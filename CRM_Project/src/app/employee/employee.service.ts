@@ -12,32 +12,35 @@ export class EmployeeService {
 
 
   getEmployees(): Observable<any> {
-
     return this.httpClient.get(this.empurl);
   }
 
+  getEmployeeId(emp_id: any): Observable<any> {
+    return this.httpClient.get(`${this.empurl}/${emp_id}`);
+  }
+
   createEmployee(empData:any): Observable<any> {
-    console.log(empData)
-    let data={
-      "state": empData.state,
-      "add_line_1": empData.addl1,
-      "add_line_2": empData.addl2,
-      "city": empData.city,
-      "zipcode": empData.zipcode,
-      "country": empData.country,
-        "first_name": empData.fname,
-        "last_name": empData.lname,
-        "gender": empData.gender,
-        "date_of_birth": empData.dob,
-        "email": empData.email,
-        "contact_no": empData.contact_no,
-        "designation": empData.designation
+    console.log(empData);
+    // let data={
+    //   "state": empData.state,
+    //   "add_line_1": empData.add_line_1,
+    //   "add_line_2": empData.add_line_2,
+    //   "city": empData.city,
+    //   "zipcode": empData.zipcode,
+    //   "country": empData.country,
+    //     "first_name": empData.first_name,
+    //     "last_name": empData.last_name,
+    //     "gender": empData.gender,
+    //     "date_of_birth": empData.dob,
+    //     "email": empData.email,
+    //     "contact_no": empData.contact_no,
+    //     "designation": empData.designation
 
-    }
+    // }
 
-    console.log(data);
+    // console.log(data);
     //  return this.httpClient.get<Game[]>(this.gameurl).pipe(map(res =>gameData = res))
-    return this.httpClient.post(this.empurl,data);
+    return this.httpClient.post(this.empurl,empData);
     // return this.httpClient.post(this.gameurl,gameData);
     // return this.httpClient.post<Game>(this.gameurl, JSON.stringify(gameData), this.httpOptions)
     // .pipe(
@@ -50,6 +53,8 @@ export class EmployeeService {
   }
 
   updateEmployee(empid:any,empData:any): Observable<any> {
+    console.log(empid);
+   console.log( `${this.empurl}/${empid}`);
     return this.httpClient.put(`${this.empurl}/${empid}`, empData);
   }
 
