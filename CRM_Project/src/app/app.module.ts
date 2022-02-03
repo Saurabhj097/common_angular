@@ -11,9 +11,12 @@ import { CustomerComponent } from './customer/customer.component';
 import { PlanComponent } from './plan/plan.component';
 import { HeaderComponent } from './header/header.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
 import { PersonComponent } from './person/person.component';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MarkAsteriskDirective } from './directives/mark-asterisk.directive';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { CommonModule } from '@angular/common';
+// import { NgxPaginationModule } from 'ngx-pagination';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,13 +28,17 @@ import { PersonComponent } from './person/person.component';
     PlanComponent,
     HeaderComponent,
     PersonComponent,
+    MarkAsteriskDirective,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-HttpClientModule,
-FormsModule
-  ],
+    CommonModule,
+    NgxPaginationModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
+   ],
   providers: [],
   bootstrap: [AppComponent]
 })

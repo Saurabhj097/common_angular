@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable,throwError } from 'rxjs';
+import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 @Injectable({
   providedIn: 'root'
 })
@@ -8,45 +9,37 @@ export class EmployeeService {
 
 
   private empurl = 'http://localhost/yii/crmProject/frontend/web/index.php/employees';
+  private sortcityurl = "http://localhost/yii/crmProject/frontend/web/index.php/employees?sort";
+  private searchemp= "http://localhost/yii/crmProject/frontend/web/index.php/employees?filter";
   constructor(private httpClient: HttpClient ) { }
 
 
   getEmployees(): Observable<any> {
-    return this.httpClient.get(this.empurl);
+    return this.httpClient.get(`${this.empurl}?per-page=2&page=1`);
   }
 
-  getEmployeeId(emp_id: any): Observable<any> {
-    return this.httpClient.get(`${this.empurl}/${emp_id}`);
-  }
+  getpageEmployee(num:any) : Observable<any>{
+    return this.httpClient.get(`${this.empurl}?per-page=2&page=${num}`);
+      }
 
+
+    getEmployeeId(emp_id: any): Observable<any>{
+      return this.httpClient.get(`${this.empurl}/${emp_id}`)
+    }
+
+  getEmployeesPage(page: any): Observable<any> {
+    console.log(`${this.empurl}?per-page=5&page=${page}`);
+    console.log(page);
+    return this.httpClient.get(`${this.empurl}?per-page=5&page=${page}`);
+  }
   createEmployee(empData:any): Observable<any> {
     console.log(empData);
-    // let data={
-    //   "state": empData.state,
-    //   "add_line_1": empData.add_line_1,
-    //   "add_line_2": empData.add_line_2,
-    //   "city": empData.city,
-    //   "zipcode": empData.zipcode,
-    //   "country": empData.country,
-    //     "first_name": empData.first_name,
-    //     "last_name": empData.last_name,
-    //     "gender": empData.gender,
-    //     "date_of_birth": empData.dob,
-    //     "email": empData.email,
-    //     "contact_no": empData.contact_no,
-    //     "designation": empData.designation
-
-    // }
-
-    // console.log(data);
-    //  return this.httpClient.get<Game[]>(this.gameurl).pipe(map(res =>gameData = res))
     return this.httpClient.post(this.empurl,empData);
-    // return this.httpClient.post(this.gameurl,gameData);
-    // return this.httpClient.post<Game>(this.gameurl, JSON.stringify(gameData), this.httpOptions)
-    // .pipe(
-    //   catchError(this.errorHandler)
-    // )
+
   }
+
+
+
 
   deleteEmployee(empid:any): Observable<any> {
     return this.httpClient.delete(`${this.empurl}/${empid}`);
@@ -58,7 +51,7 @@ export class EmployeeService {
     return this.httpClient.put(`${this.empurl}/${empid}`, empData);
   }
 
-
+  // http://localhost/yii/crmProject/frontend/web/index.php/employees?filter[city][like]=ma
   // private empurl = 'http://localhost/benchmark_yii_projects/crm/crm_angular/frontend/web/index.php/employees';
 
   // constructor(private httpClient: HttpClient) { }
@@ -69,4 +62,23 @@ export class EmployeeService {
 
   //   return this.httpClient.get(this.empurl)
   // }
+
+
+  onSearchId(value: any): Observable<any>{
+    return this.httpClient.get(`${this.empurl}=${value}`);
+  }
+
+  getSort(val: any): Observable<any>{
+    return this.httpClient.get(`${this.sortcityurl}=${val}`);
+  }
+  // onEmpIDSearch(name: any, value: any): Observable<any> {
+  //   return this.httpClient.get(`${this.searchemp}[${name}]=${value}`);
+
+  // }
+
+  onEmpSearch(name: any, value: any): Observable<any> {
+    return this.httpClient.get(`${this.searchemp}[${name}][like]=${value}`);
+
+  }
+
 }

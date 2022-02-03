@@ -3,7 +3,8 @@ import { Employee } from '../employee.model';
 import { EmployeeService } from './employee.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-employee',
@@ -17,33 +18,17 @@ export class EmployeeComponent implements OnInit {
   employees: any;
   errors: any;
   emp_id: null;
-  formData = [];
+  data: any;
+  employeeOne: any;
   empData: any;
-  persons: any;
-  addresses: any;
-  EmployeeOne: any;
-
-  updateForm = new FormGroup({
-    emp_id: new FormControl(''),
-    add_line_1: new FormControl(''),
-    add_line_2: new FormControl(''),
-    person_id: new FormControl(''),
-    city: new FormControl(''),
-    zipcode: new FormControl(''),
-    state: new FormControl(''),
-    country: new FormControl(''),
-    first_name: new FormControl(''),
-    last_name: new FormControl(''),
-    gender: new FormControl(''),
-    date_of_birth: new FormControl(''),
-    email: new FormControl(''),
-    contact_no: new FormControl(''),
-    designation: new FormControl('')
-    //lastName: new FormControl(''),
-  });
-
-
-
+  p : any =1 ;
+  choiceName: any;
+  selected: any;
+  ename: any;
+  evalue: any;
+  choices: any = ['First_Name', 'Designation','City'];
+  addForm: FormGroup;
+  editForm: FormGroup;
   constructor(
     private httpClient: HttpClient,
     private employeeService: EmployeeService,
@@ -52,37 +37,72 @@ export class EmployeeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this. getallEmployees();
 
-    /* get Notifications */
-    this.getallEmployees();
-    this.setEmployeeFormRules();
+    this.addForm = new FormGroup({
+      'add_line_1': new FormControl(null),
+      'add_line_2': new FormControl(null),
+      'city': new FormControl(null),
+      'zipcode': new FormControl(null),
+      'state': new FormControl(null),
+      'country': new FormControl(null),
+      'first_name':new FormControl(null),
+      'last_name': new FormControl(null),
+      'gender': new FormControl(null),
+      'date_of_birth': new FormControl(null),
+      'email': new FormControl(null),
+      'contact_no': new FormControl(null),
+      'designation': new FormControl(null)
+
+    })
+
+
+    this.editForm = new FormGroup({
+      'emp_id': new FormControl(),
+      'add_line_1': new FormControl(),
+      'add_line_2': new FormControl(),
+      'city': new FormControl(),
+      'zipcode': new FormControl(),
+      'state': new FormControl(),
+      'country': new FormControl(),
+      'first_name':new FormControl(),
+      'last_name': new FormControl(),
+      'gender': new FormControl(),
+      'date_of_birth': new FormControl(),
+      'email': new FormControl(),
+      'contact_no': new FormControl(),
+      'designation': new FormControl()
+
+    })
+
+
+    //  onSearch(event) {
+    //   const inputValue = event.target.value;
+    //   this.employeeService.onSearchId(inputValue).subscribe(
+    //     result => {
+    //       console.log(result);
+    //       this.employees = result;
+    //     },
+    //     error => {
+    //       this.errors = error
+    //     }
+
+    //   );
+
+    // }
   }
 
-  public setEmployeeFormRules(){
-    this.updateForm = this.fb.group({
-      emp_id: [{ value: null, disabled: true }, [Validators.required]],
-      add_line_1: ['', [Validators.required]],
-      add_line_2: ['', [Validators.required]],
-      city: ['', [Validators.required]],
-      zipcode: ['', [Validators.required]],
-      state: ['', [Validators.required]],
-      country: ['', [Validators.required]],
-      first_name: ['', [Validators.required]],
-      last_name: ['', [Validators.required]],
-      gender: ['', [Validators.required]],
-      date_of_birth: ['', [Validators.required]],
-      email: ['', [Validators.required]],
-      contact_no: ['', [Validators.required]],
-      designation: ['', [Validators.required]]
-    });
-  }
 
   openModal() {
     this.displayEmp = "block";
   }
 
 
-
+    // Pagination code
+    onTableDataChange(event) {
+      this.p = event;
+      this.getallEmployees();
+    }
 
   getallEmployees() {
     this.employeeService.getEmployees().subscribe(result => {
@@ -95,36 +115,22 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  //  addEmployee(empData: Employee){
-  //   console.log("hi");
-  //  console.log(empData);
-  //  this.employeeService.createEmployee(empData)
-  //  .subscribe(
-  //    response => {
-  //      console.log("hi");
-  //      // console.log(gameData);
-  //      // this.submitted = true;
-  //      this.displayEmp="none";
-  //      this.getallEmployees();
 
-  //    },
-  //  )
-  // }
-
-  addEmployee(empData: Employee) {
+  addEmployee() {
     console.log("hi");
-    console.log(empData);
-    this.employeeService.createEmployee(empData)
+    // console.log(empData);
+    this.employeeService.createEmployee(this.addForm.value)
       .subscribe(
         response => {
           console.log("hi");
           // console.log(gameData);
           // this.submitted = true;
-          this.displayEmp = "none";
-          this.getallEmployees();
+
         },
       )
-
+      this.displayEmp = "none";
+      this.getallEmployees();
+      this.router.navigate(['employee']);
   }
 
 
@@ -136,7 +142,7 @@ export class EmployeeComponent implements OnInit {
           // this.submitted = true;
         },
       )
-      this.ngOnInit();
+      this.getallEmployees();
       this.router.navigate(['employee']);
   }
 
@@ -144,76 +150,117 @@ export class EmployeeComponent implements OnInit {
     this.displayEmp = "none";
   }
 
-  openModalEdit() {
+  openModalEdit(emp_id: any, editForm) {
 
     this.displayEmp1 = "block";
-    // console.log(emp_id,designation);
-  //   (<HTMLInputElement>document.getElementById("emp_id")).value = emp_id;
-  //   (<HTMLInputElement>document.getElementById("add_line_11")).value = add_line_1;
-  //   (<HTMLInputElement>document.getElementById("add_line_21")).value = add_line_2;
-  //   (<HTMLInputElement>document.getElementById("city1")).value = city;
-  //   (<HTMLInputElement>document.getElementById("zipcode1")).value = zipcode;
-  //   (<HTMLInputElement>document.getElementById("state1")).value = state;
-  //   (<HTMLInputElement>document.getElementById("country1")).value = country;
-  //   (<HTMLInputElement>document.getElementById("first_name1")).value = first_name;
-  //   (<HTMLInputElement>document.getElementById("last_name1")).value = last_name;
-  //   (<HTMLInputElement>document.getElementById("gender1")).value = gender;
-  //   (<HTMLInputElement>document.getElementById("date_of_birth1")).value = date_of_birth;
-  //   (<HTMLInputElement>document.getElementById("email1")).value = email;
-  //   (<HTMLInputElement>document.getElementById("contact_no1")).value = contact_no;
-  //   (<HTMLInputElement>document.getElementById("designation1")).value = designation;
-  // }
-    }
+    this.employeeService.getEmployeeId(emp_id).subscribe(
+      result => {
+        console.log(result);
+        this.employeeOne = result;
 
-    onFetchId(emp_id: any , updateForm) {
-      console.log(emp_id);
-      this.employeeService.getEmployeeId(emp_id).subscribe(
-        result => {
-          console.log(result);
-          this.EmployeeOne = result;
+        const controls = editForm.controls;
 
-          const controls = updateForm.controls;
+        controls.emp_id.setValue(result.emp_id);
+        controls.first_name.setValue(result.person.first_name);
+        controls.last_name.setValue(result.person.last_name);
+        controls.last_name.setValue(result.person.last_name);
+        controls.gender.setValue(result.person.gender);
+        controls.date_of_birth.setValue(result.person.date_of_birth);
+        controls.email.setValue(result.person.email);
+        controls.contact_no.setValue(result.person.contact_no);
+        controls.add_line_1.setValue(result.address.add_line_1);
+        controls.add_line_2.setValue(result.address.add_line_2);
+        controls.city.setValue(result.address.city);
+        controls.state.setValue(result.address.state);
+        controls.zipcode.setValue(result.address.zipcode);
+        controls.country.setValue(result.address.country);
+        controls.designation.setValue(result.designation);
+      },
+      error => {
+        this.errors = error
+      }
 
-          controls.emp_id.setValue(result.emp_id);
-          controls.add_line_1.setValue(result.add_line_1);
-          controls.add_line_2.setValue(result.add_line_2);
-          controls.city.setValue(result.city);
-          controls.zipcode.setValue(result.zipcode);
-          controls.state.setValue(result.state);
-          controls.country.setValue(result.country);
-          controls.first_name.setValue(result.first_name);
-          controls.last_name.setValue(result.last_name);
-          controls.gender.setValue(result.gender);
-          controls.date_of_birth.setValue(result.date_of_birth);
-          controls.email.setValue(result.email);
-          controls.contact_no.setValue(result.contact_no);
-          controls.designation.setValue(result.designation);
-        },
-        error => {
-          this.errors = error
-        }
+    );
 
-      );
-    }
+  }
+
+  page(num:any){
+    this.data = this.employeeService.getpageEmployee(+num).subscribe(
+      result => {this.employees = result;}
+    )
+    console.log(this.data);
+  }
+
+  onSort(val: any){
+    this.data = this.employeeService.getSort(val).subscribe(
+      result => {this.employees = result;}
+    )
+    console.log(this.data);
+  }
 
   onCloseHandledEdit() {
     this.displayEmp1 = "none";
   }
-  editEmployee1(emp_id: any, empData: Employee) {
-    this.empData = this.updateForm.value;
-    this.emp_id = this.updateForm.get('emp_id').value;
-    console.log(+emp_id.value);
-    this.employeeService.updateEmployee(+emp_id.value, empData)
+  editEmployee1() {
+    this.empData = this.editForm.value;
+    this.emp_id = this.editForm.get('emp_id').value;
+    console.log(this.editForm)
+    this.employeeService.updateEmployee(this.emp_id, this.empData)
       .subscribe(
         response => {
-          console.log(empData);
-          // this.submitted = true;
-
-
         },
       )
       this.getallEmployees();
       this.router.navigate(['employee']);
-  }
-}
+      }
 
+
+      selectForm = this.fb.group({
+        choiceName: ['', [Validators.required]],
+        choiceValue: ['', [Validators.required]],
+      })
+
+      getChoice() {
+
+        this.ename = this.selectForm.get('choiceName').value;
+        this.evalue = this.selectForm.get('choiceValue').value;
+        //console.log(this.cname);
+        console.log(this.evalue);
+        if (this.ename == "First_Name") {
+          this.employeeService.onEmpSearch('first_name', this.evalue).subscribe(
+            result => {
+              console.log(result);
+              this.employees = result;
+            },
+            error => {
+              this.errors = error
+            });
+
+        }
+        else if (this.ename == "City") {
+
+          this.employeeService.onEmpSearch('city', this.evalue).subscribe(
+            result => {
+              console.log(result);
+              this.employees = result;
+            },
+            error => {
+              this.errors = error
+            });
+
+        }
+
+        else {
+
+          this.employeeService.onEmpSearch('designation', this.evalue).subscribe(
+            result => {
+              console.log(result);
+              this.employees = result;
+            },
+            error => {
+              this.errors = error
+            });
+
+        }
+}
+}
