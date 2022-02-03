@@ -53,12 +53,24 @@
                     <div class="row">
 
                         <div class="col-sm-9">
-                            <button type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                            <button type="button" class="btn btn-primary" (click)="getChoice()"><i
+                                    class="fa fa-search"></i></button>
                             <div class="filter-group">
-                                <label>Name</label>
-                                <input type="text" class="form-control">
+                                <label> Search by</label>
+                                <!-- (change)="changeChoice($event)" -->
+                                <form [formGroup]="selectForm">
+                                    <select name="search" id="search" formControlName="choiceName">
+                                        <option *ngFor="let choice of choices" [ngValue]="choice">{{choice}}</option>
+                                    </select>
+                                    <input type="text" class="form-control" formControlName="choiceValue">
+
+                                    <!-- error block -->
+                                    <!-- <div class="invalid-feedback" *ngIf="isSubmitted && cityName.errors?.required">
+                    <sup>*</sup>Please enter your city name
+                 </div> -->
+                                </form>
                             </div>
-                            <div class="filter-group">
+                            <!-- <div class="filter-group">
                                 <label>Location</label>
                                 <select class="form-control">
                                     <option>All</option>
@@ -68,27 +80,27 @@
                                     <option>New York</option>
                                     <option>Paris</option>
                                 </select>
-                            </div>
+                            </div> -->
 
-                            <span class="filter-icon"><i class="fa fa-filter"></i></span>
+                            <!-- <span class="filter-icon"><i class="fa fa-filter"></i></span> -->
                         </div>
                     </div>
                 </div>
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th><a (click)="onSort('id')"> ID <i class="fa fa-sort"></i></a></th>
                             <!-- <th><a>Customer <i class="fa fa-sort"></i></a></th> -->
                             <!-- <th>Location</th> -->
-                            <th>Plan Selected</th>
+                            <th> <a (click)="onSort('plan')">Plan Selected <i class="fa fa-sort"></i></a></th>
 
-                            <th>Managed By</th>
+                            <th><a (click)="onSort('employee')">Managed By <i class="fa fa-sort"></i></a></th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr *ngFor="let customer of customers">
-
+                    <tbody
+                        *ngFor="let customer of customers | paginate: { itemsPerPage: 4, currentPage: p }; let i = index">
+                        <tr>
                             <!-- <td *ngFor="let person of customer.person"></td> -->
                             <td> {{customer.customer_id}}</td>
                             <td>{{customer.plan.plan_name}}</td>
@@ -99,31 +111,26 @@
                                     data-bs-target="#updateModal"
                                     (click)="onFetchId(customer.customer_id, updateForm)"><i
                                         class="material-icons">&#xE254;</i></a>
-                                <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i
-                                        class="material-icons">&#xE872;</i></a>
+
+
+                                <a class="delete" title="Delete" data-toggle="tooltip"
+                                    (click)="onDelete(customer.customer_id)"><i class="material-icons">&#xE872;</i></a>
                             </td>
                         </tr>
 
                     </tbody>
                 </table>
-                <!--                 
-                <div class="clearfix">
-                    <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                    <ul class="pagination">
-                        <li class="page-item disabled"><a href="#">Previous</a></li>
-                        <li class="page-item"><a href="#" class="page-link">1</a></li>
-                        <li class="page-item"><a href="#" class="page-link">2</a></li>
-                        <li class="page-item"><a href="#" class="page-link">3</a></li>
-                        <li class="page-item active"><a href="#" class="page-link">4</a></li>
-                        <li class="page-item"><a href="#" class="page-link">5</a></li>
-                        <li class="page-item"><a href="#" class="page-link">6</a></li>
-                        <li class="page-item"><a href="#" class="page-link">7</a></li>
-                        <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                    </ul>
-                </div> -->
+
+                <!--Including the pagination control.-->
+                <div class="text-right">
+                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </div>
             </div>
+
+
         </div>
     </div>
+    <!-- </div> -->
     <!-- </form> -->
 
     <!-- Add Modal -->
@@ -145,7 +152,8 @@
                             </label>
 
                             <select class="form-select" aria-label="Select Plan" ngModel id="plan" name="plan_id">
-                                <option [ngValue]="plan.plan_id" *ngFor="let plan of plans">{{plan.plan_name}}</option>
+                                <option [ngValue]="plan.plan_id" *ngFor="let plan of plans">{{plan.plan_name}}
+                                </option>
 
 
                             </select>
