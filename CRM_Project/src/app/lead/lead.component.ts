@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Lead } from '../lead.model';
+// import { Lead } from '../lead.model';
 import { LeadService } from './lead.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { LeadService } from './lead.service';
   styleUrls: ['./lead.component.css'],
 })
 export class LeadComponent implements OnInit {
-  constructor(private httpClient: HttpClient, private ls: LeadService) {}
+  constructor(private httpClient: HttpClient, private ls: LeadService) { }
 
   leads: any;
   display = "none";
@@ -19,10 +19,10 @@ export class LeadComponent implements OnInit {
   displayLead = "none";
   displayEdit = "none";
 
-  addForm:FormGroup;
+  addForm: FormGroup;
 
   ngOnInit(): void {
-    
+
     this.getallLeads();
     console.log(this.leads);
 
@@ -33,33 +33,32 @@ export class LeadComponent implements OnInit {
       'zipcode': new FormControl(null),
       'state': new FormControl(null),
       'country': new FormControl(null),
-      'first_name':new FormControl(null),
+      'first_name': new FormControl(null),
       'last_name': new FormControl(null),
       'gender': new FormControl(null),
       'date_of_birth': new FormControl(null),
       'email': new FormControl(null),
       'contact_no': new FormControl(null),
       'updated_at': new FormControl(null)
-  
+
     })
   }
 
   getallLeads() {
-    this.ls.getLeads().subscribe(result =>
-      {
-        this.leads = result;
-        console.log(result);
-      }
+    this.ls.getLeads().subscribe(result => {
+      this.leads = result;
+      console.log(result);
+    }
     );
     console.log(this.leads);
   }
 
   // openModalEdit(lead_id:any,add_line_1:any,add_line_2:any,city:any,zipcode:any,state:any,country:any,first_name:any,
   //                 last_name:any,gender:any,date_of_birth:any,email:any,contact_no:any){
-    
-    openModalEdit(lead_id:any,add_line_1:any,add_line_2:any,city:any,zipcode:any,
-                    state:any,country:any,first_name:any,last_name:any,gender:any,date_of_birth:any,email:any,contact_no:any){
-    console.log(lead_id,add_line_1);
+
+  openModalEdit(lead_id: any, add_line_1: any, add_line_2: any, city: any, zipcode: any,
+    state: any, country: any, first_name: any, last_name: any, gender: any, date_of_birth: any, email: any, contact_no: any) {
+    console.log(lead_id, add_line_1);
     this.displayEdit = "block";
     // console.log(emp_id,designation);
     (<HTMLInputElement>document.getElementById("lead_id1")).value = lead_id;
@@ -80,39 +79,39 @@ export class LeadComponent implements OnInit {
   openModal() {
     this.displayLead = "block";
     // this.editLead(this.lead_id,this.created_at,this.created_by,this.updated_at,this.updated_by,this.person_id);
-    
+
   }
 
-  
 
-  addLead(){
-   console.log(this.addForm.value);
-   this.ls.createLead(this.addForm.value)
-   .subscribe(
-     response => {
-       console.log("hi");
-       this.displayLead="none";
-       this.getallLeads();
-     },
-   )
+
+  addLead() {
+    console.log(this.addForm.value);
+    this.ls.createLead(this.addForm.value)
+      .subscribe(
+        response => {
+          console.log("hi");
+          this.displayLead = "none";
+          this.getallLeads();
+        },
+      )
   }
 
   // page2(i:any){
   //     this.ls.getLeads(i);
   // }
 
-  updateLead(leadid:any,leadData:any){
-    this.ls.updateLeads(+leadid.value,leadData)
-    .subscribe(
-      response => {
-        console.log("hi");
-        console.log(leadData);
-        // this.submitted = true;
-        
-      },
-    );
-    this.displayEdit="none";
-        this.getallLeads();
+  updateLead(leadid: any, leadData: any) {
+    this.ls.updateLeads(+leadid.value, leadData)
+      .subscribe(
+        response => {
+          console.log("hi");
+          console.log(leadData);
+          // this.submitted = true;
+
+        },
+      );
+    this.displayEdit = "none";
+    this.getallLeads();
   }
 
   // openModalAdd(){
@@ -123,7 +122,7 @@ export class LeadComponent implements OnInit {
   //   // pushAdd();
   //   this.displayAdd = "none";
   //   this.displayPerson = "block";
-    
+
   // }
 
   // openModelLead(){

@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { PersonComponent } from './person/person.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MarkAsteriskDirective } from './directives/mark-asterisk.directive';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MarkAsteriskDirective } from './directives/mark-asterisk.directive';
 
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxPaginationModule,
 
   ],
   providers: [],
