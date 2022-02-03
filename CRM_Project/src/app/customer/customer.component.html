@@ -55,8 +55,15 @@
                         <div class="col-sm-9">
                             <button type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
                             <div class="filter-group">
-                                <label>Name</label>
-                                <input type="text" class="form-control">
+                                <label> Search by</label>
+                                <!-- <select name="search" id="search" class="form-control" [(ngModel)]="selectedSearch"
+                                    (ngModelChange)="onSelect(selectedSearch)"> -->
+                                <select name="search" id="search" class="form-control">
+                                    <option value="customer"> Id </option>
+                                    <option value="plan"> Plan </option>
+                                    <option value="employee"> Employee </option>
+                                </select>
+                                <input type="text" class="form-control" (keyup)="onKey($event)">
                             </div>
                             <div class="filter-group">
                                 <label>Location</label>
@@ -99,28 +106,31 @@
                                     data-bs-target="#updateModal"
                                     (click)="onFetchId(customer.customer_id, updateForm)"><i
                                         class="material-icons">&#xE254;</i></a>
-                                <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i
-                                        class="material-icons">&#xE872;</i></a>
+
+
+                                <a href="#" class="delete" title="Delete" data-toggle="tooltip"
+                                    (click)="onDelete(customer.customer_id)"><i class="material-icons">&#xE872;</i></a>
                             </td>
                         </tr>
 
                     </tbody>
                 </table>
-                <!--                 
+
                 <div class="clearfix">
-                    <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+                    <div class="hint-text">Showing <b>3</b> out of <b>25</b> entries</div>
                     <ul class="pagination">
                         <li class="page-item disabled"><a href="#">Previous</a></li>
-                        <li class="page-item"><a href="#" class="page-link">1</a></li>
-                        <li class="page-item"><a href="#" class="page-link">2</a></li>
-                        <li class="page-item"><a href="#" class="page-link">3</a></li>
-                        <li class="page-item active"><a href="#" class="page-link">4</a></li>
-                        <li class="page-item"><a href="#" class="page-link">5</a></li>
-                        <li class="page-item"><a href="#" class="page-link">6</a></li>
-                        <li class="page-item"><a href="#" class="page-link">7</a></li>
-                        <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                        <li class="page-item"><a class="page-link" (click)="getPage(1)">1</a>
+                        </li>
+                        <li class="page-item"><a class="page-link" (click)="getPage(2)">2</a></li>
+                        <li class="page-item"><a class="page-link" (click)="getPage(3)">3</a></li>
+                        <li class="page-item "><a class="page-link" (click)="getPage(4)">4</a></li>
+                        <li class="page-item"><a class="page-link" (click)="getPage(5)">5</a></li>
+                        <li class="page-item"><a class="page-link" (click)="getPage(6)">6</a></li>
+                        <li class="page-item"><a class="page-link" (click)="getPage(7)">7</a></li>
+                        <li class="page-item"><a class="page-link">Next</a></li>
                     </ul>
-                </div> -->
+                </div>
             </div>
         </div>
     </div>

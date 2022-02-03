@@ -8,13 +8,13 @@ import { PlanComponent } from './plan/plan.component';
 import { TaskComponent } from './task/task.component';
 
 const routes: Routes = [
-  {path: 'task', component: TaskComponent},
-  {path: 'employee', component: EmployeeComponent},
-  {path: 'lead', component: LeadComponent},
-  {path: 'opportunity', component: OpportunityComponent},
-  {path: 'customer', component: CustomerComponent},
-  {path: 'plan', component: PlanComponent},
-  {path: '', redirectTo: '/task', pathMatch: 'full'},
+  { path: 'task', component: TaskComponent },
+  { path: 'employee', component: EmployeeComponent },
+  { path: 'lead', component: LeadComponent },
+  { path: 'opportunity', component: OpportunityComponent },
+  { path: 'customer', component: CustomerComponent },
+  { path: 'plan', component: PlanComponent },
+  { path: '', pathMatch: 'full', component: CustomerComponent },
 ];
 
 @NgModule({

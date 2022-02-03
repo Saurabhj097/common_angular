@@ -8,6 +8,7 @@ import { PlanService } from '../plan/plan.service';
 import { PersonService } from '../person/person.service';
 import { OpportunityService } from '../opportunity/opportunity.service';
 import { EmployeeService } from '../employee/employee.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customer',
@@ -38,7 +39,7 @@ export class CustomerComponent implements OnInit {
   });
 
 
-  constructor(private http: HttpClient, private customerService: CustomerService, private planService: PlanService, private personService: PersonService, private opportunityService: OpportunityService, private employeeService: EmployeeService, private fb: FormBuilder) { }
+  constructor(private http: HttpClient, private customerService: CustomerService, private planService: PlanService, private personService: PersonService, private opportunityService: OpportunityService, private employeeService: EmployeeService, private fb: FormBuilder, private router: Router) { }
 
   ngOnInit() {
     this.setCustomerFormRules();
@@ -57,6 +58,19 @@ export class CustomerComponent implements OnInit {
 
     });
 
+  }
+
+  getPage(page: any) {
+    this.customerService.getPageId(page).subscribe(
+      result => {
+        console.log(result);
+        this.customers = result;
+      },
+      error => {
+        this.errors = error
+      }
+
+    );
   }
 
   openModal() {
@@ -154,7 +168,7 @@ export class CustomerComponent implements OnInit {
   }
 
   onFetchId(customer_id: any, updateForm) {
-    console.log(customer_id);
+    //console.log(customer_id);
     this.customerService.getCustomerId(customer_id).subscribe(
       result => {
         console.log(result);
@@ -174,6 +188,23 @@ export class CustomerComponent implements OnInit {
     );
   }
 
+  onDelete(customer_id: any) {
+
+    this.customerService.deleteCustomer(customer_id).subscribe(
+      result => {
+        this.getAllCustomers();
+        this.router.navigate(['customer']);
+
+      },
+      error => {
+        this.errors = error
+      }
+
+    );
+  }
+
+
+
   onSubmit() {
     this.custData = this.updateForm.value;
     this.custId = this.updateForm.get('customer_id').value
@@ -192,6 +223,28 @@ export class CustomerComponent implements OnInit {
       );
 
   }
+
+
+  onKey(event) {
+    const inputValue = event.target.value;
+    this.customerService.onSearch(inputValue).subscribe(
+      result => {
+        console.log(result);
+        this.customers = result;
+      },
+      error => {
+        this.errors = error
+      }
+
+    );
+
+  }
+
+  // onSelect(val) {
+  //   console.log(val);
+  //   //this.onClickArray(val);
+  // }
+
 }
 
 
