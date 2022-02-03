@@ -15,12 +15,8 @@ import { PersonComponent } from './person/person.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MarkAsteriskDirective } from './directives/mark-asterisk.directive';
 import { NgxPaginationModule } from 'ngx-pagination';
-<<<<<<< HEAD
 import { CommonModule } from '@angular/common';
 // import { NgxPaginationModule } from 'ngx-pagination';
-=======
-
->>>>>>> ef6cd003a750df1687d84b982995eed5def55901
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,15 +37,8 @@ import { CommonModule } from '@angular/common';
     NgxPaginationModule,
     HttpClientModule,
     FormsModule,
-<<<<<<< HEAD
     ReactiveFormsModule
    ],
-=======
-    ReactiveFormsModule,
-    NgxPaginationModule,
-
-  ],
->>>>>>> ef6cd003a750df1687d84b982995eed5def55901
   providers: [],
   bootstrap: [AppComponent]
 })
