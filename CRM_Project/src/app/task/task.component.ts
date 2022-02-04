@@ -20,14 +20,15 @@ export class TaskComponent implements OnInit {
   data: any;
   taskOne: any;
   taskData: any;
-  p : any =1 ;
+  p: any = 1;
   choiceName: any;
   selected: any;
   tname: any;
   tvalue: any;
-  choices: any = ['Task_Name', 'Status','Emp_name'];
+  choices: any = ['Task Id', 'Task Name', 'Task Status', 'Managed By'];
   addForm: FormGroup;
   editForm: FormGroup;
+  selectForm: FormGroup;
   constructor(
     private httpClient: HttpClient,
     private taskService: TaskService,
@@ -53,6 +54,11 @@ export class TaskComponent implements OnInit {
       'task_status': new FormControl(null),
       'emp_id': new FormControl(null),
       'module_name': new FormControl(null)
+    })
+
+    this.selectForm = this.fb.group({
+      choiceName: ['', [Validators.required]],
+      choiceValue: ['', [Validators.required]],
     })
 
 
@@ -86,11 +92,14 @@ export class TaskComponent implements OnInit {
       this.tasks = result;
       console.log(result);
     },
-    error => {
-      this.errors = error
-    });
+      error => {
+        this.errors = error
+      });
   }
-
+  onTableDataChange(event) {
+    this.p = event;
+    this.getallTasks();
+  }
 
   addTask() {
     console.log("hi");
@@ -104,23 +113,23 @@ export class TaskComponent implements OnInit {
 
         },
       )
-      this.displayTask = "none";
-      this.getallTasks();
-      this.router.navigate(['employee']);
+    this.displayTask = "none";
+    this.getallTasks();
+    this.router.navigate(['employee']);
   }
 
 
-  // deleteEmployee(empid: Employee) {
-  //   console.log(empid);
-  //   this.employeeService.deleteEmployee(empid)
-  //     .subscribe(
-  //       response => {
-  //         // this.submitted = true;
-  //       },
-  //     )
-  //     this.getallEmployees();
-  //     this.router.navigate(['employee']);
-  // }
+  deleteTask(task_id: any) {
+    console.log(task_id);
+    this.taskService.deleteTask(task_id)
+      .subscribe(
+        response => {
+          this.tasks = response;
+        },
+      )
+    this.getallTasks();
+    this.router.navigate(['task']);
+  }
 
   onCloseHandled() {
     this.displayTask = "none";
@@ -164,55 +173,112 @@ export class TaskComponent implements OnInit {
         response => {
         },
       )
-      this.getallTasks();
-      this.router.navigate(['tasks']);
-      }
+    this.getallTasks();
+    this.router.navigate(['tasks']);
+  }
 
 
 
 
-//       getChoice() {
+  getChoice() {
 
-//         this.ename = this.selectForm.get('choiceName').value;
-//         this.evalue = this.selectForm.get('choiceValue').value;
-//         //console.log(this.cname);
-//         console.log(this.evalue);
-//         if (this.ename == "First_Name") {
-//           this.employeeService.onEmpSearch('first_name', this.evalue).subscribe(
-//             result => {
-//               console.log(result);
-//               this.employees = result;
-//             },
-//             error => {
-//               this.errors = error
-//             });
+    this.tname = this.selectForm.get('choiceName').value;
+    this.tvalue = this.selectForm.get('choiceValue').value;
+    //console.log(this.cname);
+    console.log(this.tvalue);
+    if (this.tname == "Task Id") {
+      this.taskService.onTaskIdSearch('task_id', this.tvalue).subscribe(
+        result => {
+          console.log(result);
+          this.tasks = result;
+        },
+        error => {
+          this.errors = error
+        });
 
-//         }
-//         else if (this.ename == "City") {
+    }
+    else if (this.tname == "Task Name") {
 
-//           this.employeeService.onEmpSearch('city', this.evalue).subscribe(
-//             result => {
-//               console.log(result);
-//               this.employees = result;
-//             },
-//             error => {
-//               this.errors = error
-//             });
+      this.taskService.onTaskSearch('task_name', this.tvalue).subscribe(
+        result => {
+          console.log(result);
+          this.tasks = result;
+        },
+        error => {
+          this.errors = error
+        });
 
-//         }
+    }
 
-//         else {
+    else if (this.tname == "Task Status") {
 
-//           this.employeeService.onEmpSearch('designation', this.evalue).subscribe(
-//             result => {
-//               console.log(result);
-//               this.employees = result;
-//             },
-//             error => {
-//               this.errors = error
-//             });
+      this.taskService.onTaskSearch('task_status', this.tvalue).subscribe(
+        result => {
+          console.log(result);
+          this.tasks = result;
+        },
+        error => {
+          this.errors = error
+        });
 
-//         }
-// }
+    }
 
+    else {
+
+      this.taskService.onTaskSearch('first_name', this.tvalue).subscribe(
+        result => {
+          console.log(result);
+          this.tasks = result;
+        },
+        error => {
+          this.errors = error
+        });
+
+    }
+  }
+
+  onSort(sortData: any) {
+    if (sortData == "id") {
+      this.data = this.taskService.getSortId().subscribe(
+        result => { this.tasks = result; }
+      )
+      console.log(this.data);
+    }
+
+    else if (sortData == "name") {
+      this.data = this.taskService.getSortTask().subscribe(
+        result => { this.tasks = result; }
+      )
+      console.log(this.data);
+    }
+
+    else if (sortData == "desc") {
+      this.data = this.taskService.getSortTaskDesc().subscribe(
+        result => { this.tasks = result; }
+      )
+      console.log(this.data);
+    }
+
+    else if (sortData == "status") {
+      this.data = this.taskService.getSortTaskStatus().subscribe(
+        result => { this.tasks = result; }
+      )
+      console.log(this.data);
+    }
+
+    else if (sortData == "date") {
+      this.data = this.taskService.getSortTaskDate().subscribe(
+        result => { this.tasks = result; }
+      )
+      console.log(this.data);
+    }
+
+    else {
+      this.data = this.taskService.getSortEmployee().subscribe(
+        result => { this.tasks = result; }
+      )
+      console.log(this.data);
+    }
+
+  }
 }

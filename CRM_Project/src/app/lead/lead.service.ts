@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class LeadService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -16,11 +16,11 @@ export class LeadService {
     }),
   };
 
-  private leadUrl = 'http://localhost/yii/crmNg/frontend/web/index.php/leads';
-  private sortCityUrl = 'http://localhost/yii/crmNg/frontend/web/index.php/leads?sort=city';
-  private sortfNameUrl = 'http://localhost/yii/crmNg/frontend/web/index.php/leads?sort=first_name';
-  private sortIdUrl = 'http://localhost/yii/crmNg/frontend/web/index.php/leads?sort=lead_id';
-  private leadSearchUrl = 'http://localhost/yii/crmNg/frontend/web/index.php/leads?filter'
+  private leadUrl = 'http://localhost/benchmark_yii_projects/crm/crm_angular/frontend/web/index.php/leads';
+  private sortCityUrl = 'http://localhost/benchmark_yii_projects/crm/crm_angular/frontend/web/index.php/leads?sort=city';
+  private sortfNameUrl = 'http://localhost/benchmark_yii_projects/crm/crm_angular/frontend/web/index.php?sort=first_name';
+  private sortIdUrl = 'http://localhost/benchmark_yii_projects/crm/crm_angular/frontend/web/index.php/leads?sort=lead_id';
+  private leadSearchUrl = 'http://localhost/benchmark_yii_projects/crm/crm_angular/frontend/web/index.php/leads?filter'
   // getLeads(num:any): Observable<any> {
   //   // console.log(`${this.leadUrl}/${leadid}`);
   //   return this.httpClient.get(`${this.leadUrl}?per-page=3&page=${num}`);
@@ -31,73 +31,73 @@ export class LeadService {
     return this.httpClient.get(`${this.leadUrl}?per-page=2&page=1`);
   }
 
-  getPageLeads(i:any): Observable<any> {
+  getPageLeads(i: any): Observable<any> {
     console.log(`${this.leadUrl}?per-page=2&page=${i}`);
     return this.httpClient.get(`${this.leadUrl}?per-page=2&page=${i}`);
   }
 
 
 
-  updateLeads(leadid:any,leadData:any): Observable<any> {
+  updateLeads(leadid: any, leadData: any): Observable<any> {
     console.log(`${this.leadUrl}/${leadid}`);
     return this.httpClient.put(`${this.leadUrl}/${leadid}`, leadData);
   }
 
-  getLeadId(lead_id: any): Observable<any>{
+  getLeadId(lead_id: any): Observable<any> {
     return this.httpClient.get(`${this.leadUrl}/${lead_id}`)
   }
 
-  deleteLead(i:any){
+  deleteLead(i: any) {
     return this.httpClient.delete(`${this.leadUrl}/${i}`);
   }
 
-  getSort(){
+  getSort() {
     return this.httpClient.get(`${this.sortCityUrl}`);
   }
 
-  getfNameSort(){
+  getfNameSort() {
     return this.httpClient.get(`${this.sortfNameUrl}`);
   }
 
-  getIdSort(){
+  getIdSort() {
     return this.httpClient.get(`${this.sortIdUrl}`);
   }
 
-  onLeadSearch(field:any,value:any){
+  onLeadSearch(field: any, value: any) {
     console.log(value);
     console.log(`${this.leadSearchUrl}[${field}][like]=${value}`);
     return this.httpClient.get(`${this.leadSearchUrl}[${field}][like]=${value}`);
   }
 
-  convertLead(id:any,pId:any){
+  convertLead(id: any, pId: any) {
     let data = {
       "lead_id": id,
       "status": "hold",
       "person_id": pId
     }
-    return this.httpClient.post(`${this.leadUrl}/convert`,data);
+    return this.httpClient.post(`${this.leadUrl}/convert`, data);
     console.log(data);
   }
 
-  createLead(leadData:any): Observable<any> {
-    let data={
-        "first_name": leadData.first_name,
-        "last_name": leadData.last_name,
-        "gender": leadData.gender,
-        "date_of_birth": leadData.date_of_birth,
-        "email": leadData.email,
-        "contact_no": leadData.contact_no,
-        "state": leadData.state,
-        "add_line_1": leadData.add_line_1,
-        "add_line_2": leadData.add_line_2,
-        "city": leadData.city,
-        "zipcode": leadData.zipcode,
-        "country": leadData.country,
-        "updated_at":leadData.updated_at
+  createLead(leadData: any): Observable<any> {
+    let data = {
+      "first_name": leadData.first_name,
+      "last_name": leadData.last_name,
+      "gender": leadData.gender,
+      "date_of_birth": leadData.date_of_birth,
+      "email": leadData.email,
+      "contact_no": leadData.contact_no,
+      "state": leadData.state,
+      "add_line_1": leadData.add_line_1,
+      "add_line_2": leadData.add_line_2,
+      "city": leadData.city,
+      "zipcode": leadData.zipcode,
+      "country": leadData.country,
+      "updated_at": leadData.updated_at
     }
     console.log(data);
     //  return this.httpClient.get<Game[]>(this.gameurl).pipe(map(res =>gameData = res))
-    return this.httpClient.post(this.leadUrl,data);
+    return this.httpClient.post(this.leadUrl, data);
     // return this.httpClient.post(this.gameurl,gameData);
     // return this.httpClient.post<Game>(this.gameurl, JSON.stringify(gameData), this.httpOptions)
     // .pipe(
@@ -105,7 +105,7 @@ export class LeadService {
     // )
   }
 
-  getPersons(): Observable<any>{
+  getPersons(): Observable<any> {
     return this.httpClient.get(this.leadUrl);
   }
 }

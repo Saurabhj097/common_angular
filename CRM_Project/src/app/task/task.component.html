@@ -43,206 +43,197 @@
           <div class="row">
 
             <div class="col-sm-9">
-                <!-- <button type="button" class="btn btn-primary" (click)="getChoice()"><i
-                        class="fa fa-search"></i></button> -->
-                <div class="filter-group">
-                    <label> Search by</label>
-                    <!-- (change)="changeChoice($event)" -->
-                    <!-- <form [formGroup]="selectForm">
-                        <select name="search" id="search" formControlName="choiceName">
-                            <option *ngFor="let choice of choices" [ngValue]="choice">{{choice}}</option>
-                        </select>
-                        <input type="text" class="form-control" formControlName="choiceValue">
-                    </form> -->
-                </div>
+              <button type="button" class="btn btn-primary" (click)="getChoice()"><i class="fa fa-search"></i></button>
+              <div class="filter-group">
+                <label> Search by</label>
+                <!-- (change)="changeChoice($event)" -->
+                <form [formGroup]="selectForm">
+                  <select name="search" id="search" formControlName="choiceName">
+                    <option *ngFor="let choice of choices" [ngValue]="choice">{{choice}}</option>
+                  </select>
+                  <input type="text" class="form-control" formControlName="choiceValue">
+
+                </form>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
+
 
         <table class="table table-striped table-hover">
-          <!-- <thead>
-            <tr>
-              <th>Employee ID</th>
-              <th> <a (click)="onSort('first_name')">First Name <i class="fa fa-sort"></i></a></th>
-              <th><a > Last Name</a></th>
-              <th><a (click)="onSort('designation')">Designation <i class="fa fa-sort"></i></a></th>
-              <th><a (click)="onSort('city')">City<i class="fa fa-sort"></i></a></th>
-              <th> Actions</th>
-            </tr>
-          </thead> -->
-          <tbody >
 
-            <tr *ngFor="let task of tasks">
+          <thead>
+            <tr>
+              <th> <a (click)="onSort('id')">Task ID <i class="fa fa-sort"></i></a></th>
+              <th> <a (click)="onSort('name')">Task Name <i class="fa fa-sort"></i></a></th>
+              <th><a (click)="onSort('desc')"> Task Description</a></th>
+              <th><a (click)="onSort('status')">Task Status <i class="fa fa-sort"></i></a></th>
+              <th><a (click)="onSort('date')">Created_at<i class="fa fa-sort"></i></a></th>
+              <th><a (click)="onSort('employee')">Managed By<i class="fa fa-sort"></i></a></th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr *ngFor="let task of tasks| paginate: { itemsPerPage: 4, currentPage: p }; let i = index">
               <td>{{task.task_id}}</td>
-              <!-- <td>{{employee.person.first_name}}</td>
-              <td>{{employee.person.last_name}}</td>
-              <td>{{employee.designation}}</td>
-              <td>{{employee.address.city}}</td> -->
-              <td> <a class="edit" title="Edit" data-toggle="tooltip"
-                  (click)="openModalEdit(task.task_id,
-                  editForm)"><i
-                    class="material-icons">&#xE254;</i></a>
-                <!-- <a class="delete" title="Delete" data-toggle="tooltip" (click)="deleteEmployee(employee.emp_id)"><i
-                    class="material-icons">&#xE872;</i></a> -->
+              <td>{{task.task_name}}</td>
+              <td>{{task.task_desc}}</td>
+              <td>{{task.task_status}}</td>
+              <td>{{task.created_at}}</td>
+              <td>{{task.person.first_name}}</td>
+              <td> <a class="edit" title="Edit" data-toggle="tooltip" (click)="openModalEdit(task.task_id,
+                  editForm)"><i class="material-icons">&#xE254;</i></a>
+                <a class="delete" title="Delete" data-toggle="tooltip" (click)="deleteTask(task.task_id)"><i
+                    class="material-icons">&#xE872;</i></a>
               </td>
             </tr>
 
 
-
           </tbody>
         </table>
+        <!--Including the pagination control.-->
+        <div class="text-right">
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
 
 
-
-
-
-
-
-        <!-- <div class="clearfix">
-          <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-          <ul class="pagination" >
-            <li class="page-item disabled" ><a href="#">Previous</a></li>
-            <li class="page-item "><a class="page-link" (click)="page(1)" >1</a></li>
-            <li class="page-item"><a class="page-link" (click)="page(2)" >2</a></li>
-            <li class="page-item"><a  class="page-link" (click)="page(3)">3</a></li>
-            <li class="page-item "><a (click)="page(4)" class="page-link">4</a></li>
-            <li class="page-item"><a (click)="page(5)" class="page-link">Next</a></li>
-          </ul>
-        </div> -->
       </div>
     </div>
 
 
-  <!-- Add Modal -->
-  <div class="modal" tabindex="-1" role="dialog" id="exampleModal" [ngStyle]="{'display':displayTask}">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Enter Address Details</h4>
-          <button type="button" class="close" aria-label="Close" (click)="onCloseHandled()"><span
-              aria-hidden="true">&times;</span></button>
+    <!-- Add Modal -->
+    <div class="modal" tabindex="-1" role="dialog" id="exampleModal" [ngStyle]="{'display':displayTask}">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Enter Address Details</h4>
+            <button type="button" class="close" aria-label="Close" (click)="onCloseHandled()"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <!-- <p>Model body text</p> -->
+            <form [formGroup]="addForm" (ngSubmit)="addTask()">
+              <!-- (ngSubmit)="addEmployee(employeeForm.value) -->
+
+              <div class="form-group">
+                <label for="name">Task Name
+                  <span class="required-asterisk">*</span>
+                </label>
+                <input type="text" class="form-control" id="task_name" aria-describedby="emailHelp"
+                  formControlName="task_name" placeholder="First Name" name="task_name">
+              </div>
+
+              <div class="form-group">
+                <label for="name">Task Description
+                  <span class="required-asterisk">*</span>
+                </label>
+                <input type="text" class="form-control" id="task_desc" aria-describedby="emailHelp"
+                  formControlName="task_desc" placeholder="Last Name" name="task_desc">
+              </div>
+
+              <div class="form-group">
+                <label for="name">Task Status
+                  <span class="required-asterisk">*</span>
+                </label>
+                <input type="text" class="form-control" id="task_status" aria-describedby="emailHelp"
+                  formControlName="task_status" placeholder="Gender" name="task_status">
+              </div>
+
+              <div class="form-group">
+                <label for="name">Employee Name
+                  <span class="required-asterisk">*</span>
+                </label>
+                <select class="form-select" aria-label="Select Plan" formControlName="emp_id" id="emp_id" name="emp_id">
+                  <!-- <option [ngValue]="plan.plan_id" *ngFor="let plan of plans">{{plan.plan_name}}</option> -->
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="name">Module Name
+                  <span class="required-asterisk">*</span>
+                </label>
+                <input type="text" class="form-control" id="module_name" aria-describedby="emailHelp"
+                  formControlName="module_name" placeholder="Enter email" name="module_name">
+              </div>
+              <button type="submit" data-toggle="modal" data-target="#personModal" class="btn btn-primary"
+                (click)="addTask()">Submit</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="onCloseHandled()">Close</button>
+          </div>
         </div>
-        <div class="modal-body">
-          <!-- <p>Model body text</p> -->
-          <form [formGroup]="addForm" (ngSubmit)="addTask()">
-            <!-- (ngSubmit)="addEmployee(employeeForm.value) -->
+      </div>
+    </div>
+    <!-- End address -->
 
-            <div class="form-group">
-              <label for="name">Task Name
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control" id="task_name"  aria-describedby="emailHelp"
-              formControlName="task_name"   placeholder="First Name" name="task_name">
-            </div>
 
-            <div class="form-group">
-              <label for="name">Task Description
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control" id="task_desc"  aria-describedby="emailHelp"
-              formControlName="task_desc"     placeholder="Last Name" name="task_desc">
-            </div>
 
-            <div class="form-group">
-              <label for="name">Task Status
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control" id="task_status"  aria-describedby="emailHelp"
-              formControlName="task_status"   placeholder="Gender" name="task_status">
-            </div>
+    <!-- edit Modal -->
+    <div class="modal" tabindex="-1" role="dialog" id="exampleModal" [ngStyle]="{'display':displayTask1}">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Employee</h4>
+            <button type="button" class="close" aria-label="Close" (click)="onCloseHandledEdit()"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <!-- <p>Model body text</p> -->
+            <form [formGroup]="editForm" (ngSubmit)="editTask1()">
+              <div class="form-group">
+                <label for="name">Task Name
+                  <span class="required-asterisk">*</span>
+                </label>
+                <input type="text" class="form-control" id="task_name" aria-describedby="emailHelp"
+                  formControlName="task_name" placeholder="First Name" name="task_name">
+              </div>
 
-            <div class="form-group">
-              <label for="name">Employee Name
-                <span class="required-asterisk">*</span>
-            </label>
-            <select class="form-select" aria-label="Select Plan" formControlName="emp_id" id="emp_id" name="emp_id">
-              <!-- <option [ngValue]="plan.plan_id" *ngFor="let plan of plans">{{plan.plan_name}}</option> -->
-          </select>
-            </div>
+              <div class="form-group">
+                <label for="name">Task Description
+                  <span class="required-asterisk">*</span>
+                </label>
+                <input type="text" class="form-control" id="task_desc" aria-describedby="emailHelp"
+                  formControlName="task_desc" placeholder="Last Name" name="task_desc">
+              </div>
 
-            <div class="form-group">
-              <label for="name">Module Name
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control" id="module_name"  aria-describedby="emailHelp"
-              formControlName="module_name"   placeholder="Enter email" name="module_name">
-            </div>
-            <button type="submit" data-toggle="modal" data-target="#personModal" class="btn btn-primary"
-            (click)="addTask()">Submit</button>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="onCloseHandled()">Close</button>
+              <div class="form-group">
+                <label for="name">Task Status
+                  <span class="required-asterisk">*</span>
+                </label>
+                <input type="text" class="form-control" id="task_status" aria-describedby="emailHelp"
+                  formControlName="task_status" placeholder="Gender" name="task_status">
+              </div>
+
+              <div class="form-group">
+                <label for="name">Employee Name
+                  <span class="required-asterisk">*</span>
+                </label>
+                <select class="form-select" aria-label="Select Plan" formControlName="emp_id" id="emp_id" name="emp_id">
+                  <!-- <option [ngValue]="plan.plan_id" *ngFor="let plan of plans">{{plan.plan_name}}</option> -->
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="name">Module Name
+                  <span class="required-asterisk">*</span>
+                </label>
+                <input type="text" class="form-control" id="module_name" aria-describedby="emailHelp"
+                  formControlName="module_name" placeholder="Enter email" name="module_name">
+              </div>
+              <button type="submit" data-toggle="modal" data-target="#personModal" class="btn btn-primary"
+                (click)="editTask1()">Submit</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="onCloseHandledEdit()">Close</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- End address -->
-
-
-
-  <!-- edit Modal -->
-  <div class="modal" tabindex="-1" role="dialog" id="exampleModal" [ngStyle]="{'display':displayTask1}">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Edit Employee</h4>
-          <button type="button" class="close" aria-label="Close" (click)="onCloseHandledEdit()"><span
-            aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-          <!-- <p>Model body text</p> -->
-          <form [formGroup]="editForm" (ngSubmit)="editTask1()">
-            <div class="form-group">
-             <label for="name">Task Name
-               <span class="required-asterisk">*</span>
-           </label>
-             <input type="text" class="form-control" id="task_name"  aria-describedby="emailHelp"
-             formControlName="task_name"   placeholder="First Name" name="task_name">
-           </div>
-
-           <div class="form-group">
-             <label for="name">Task Description
-               <span class="required-asterisk">*</span>
-           </label>
-             <input type="text" class="form-control" id="task_desc"  aria-describedby="emailHelp"
-             formControlName="task_desc"     placeholder="Last Name" name="task_desc">
-           </div>
-
-           <div class="form-group">
-             <label for="name">Task Status
-               <span class="required-asterisk">*</span>
-           </label>
-             <input type="text" class="form-control" id="task_status"  aria-describedby="emailHelp"
-             formControlName="task_status"   placeholder="Gender" name="task_status">
-           </div>
-
-           <div class="form-group">
-             <label for="name">Employee Name
-               <span class="required-asterisk">*</span>
-           </label>
-           <select class="form-select" aria-label="Select Plan" formControlName="emp_id" id="emp_id" name="emp_id">
-             <!-- <option [ngValue]="plan.plan_id" *ngFor="let plan of plans">{{plan.plan_name}}</option> -->
-         </select>
-           </div>
-
-           <div class="form-group">
-             <label for="name">Module Name
-               <span class="required-asterisk">*</span>
-           </label>
-             <input type="text" class="form-control" id="module_name"  aria-describedby="emailHelp"
-             formControlName="module_name"   placeholder="Enter email" name="module_name">
-           </div>
-           <button type="submit" data-toggle="modal" data-target="#personModal" class="btn btn-primary"
-           (click)="editTask1()">Submit</button>
-         </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="onCloseHandledEdit()">Close</button>
-        </div>
-      </div>
-    </div>
-  </div></div>
   <!-- end edit Modal -->
 </body>
 
