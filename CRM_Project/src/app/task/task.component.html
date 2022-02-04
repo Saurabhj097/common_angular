@@ -36,71 +36,50 @@
                 Add Task
               </button>
             </div>
-</div></div>
+
           </div>
         </div>
         <div class="table-filter">
           <div class="row">
 
             <div class="col-sm-9">
-                <button type="button" class="btn btn-primary"><i
-                        class="fa fa-search"></i></button>
+                <!-- <button type="button" class="btn btn-primary" (click)="getChoice()"><i
+                        class="fa fa-search"></i></button> -->
                 <div class="filter-group">
                     <label> Search by</label>
                     <!-- (change)="changeChoice($event)" -->
-                    <form>
-                        <!-- <select name="search" id="search" formControlName="choiceName">
+                    <!-- <form [formGroup]="selectForm">
+                        <select name="search" id="search" formControlName="choiceName">
                             <option *ngFor="let choice of choices" [ngValue]="choice">{{choice}}</option>
-                        </select> -->
+                        </select>
                         <input type="text" class="form-control" formControlName="choiceValue">
-
-                        <!-- error block -->
-                        <!-- <div class="invalid-feedback" *ngIf="isSubmitted && cityName.errors?.required">
-        <sup>*</sup>Please enter your city name
-     </div> -->
-                    </form>
+                    </form> -->
                 </div>
-                <!-- <div class="filter-group">
-                    <label>Location</label>
-                    <select class="form-control">
-                        <option>All</option>
-                        <option>Berlin</option>
-                        <option>London</option>
-                        <option>Madrid</option>
-                        <option>New York</option>
-                        <option>Paris</option>
-                    </select>
-                </div> -->
-
-                <!-- <span class="filter-icon"><i class="fa fa-filter"></i></span> -->
             </div>
         </div>
     </div>
 
         <table class="table table-striped table-hover">
-          <thead>
+          <!-- <thead>
             <tr>
-              <th>Task ID</th>
-              <th> <a >Task Name <i class="fa fa-sort"></i></a></th>
-              <th><a > Task Description</a></th>
-              <th><a > Task Status <i class="fa fa-sort"></i></a></th>
-              <th><a >Person Name<i class="fa fa-sort"></i></a></th>
-              <th><a >Employe Name <i class="fa fa-sort"></i></a></th>
-              <th><a >Module Name <i class="fa fa-sort"></i></a></th>
-              <th><a >Created At<i class="fa fa-sort"></i></a></th>
+              <th>Employee ID</th>
+              <th> <a (click)="onSort('first_name')">First Name <i class="fa fa-sort"></i></a></th>
+              <th><a > Last Name</a></th>
+              <th><a (click)="onSort('designation')">Designation <i class="fa fa-sort"></i></a></th>
+              <th><a (click)="onSort('city')">City<i class="fa fa-sort"></i></a></th>
               <th> Actions</th>
             </tr>
-          </thead>
+          </thead> -->
           <tbody >
 
             <tr *ngFor="let task of tasks">
-              <td>{{task.emp_id}}</td>
+              <td>{{task.task_id}}</td>
               <!-- <td>{{employee.person.first_name}}</td>
               <td>{{employee.person.last_name}}</td>
               <td>{{employee.designation}}</td>
               <td>{{employee.address.city}}</td> -->
               <td> <a class="edit" title="Edit" data-toggle="tooltip"
-                  (click)="openModalEdit(task.emp_id,
+                  (click)="openModalEdit(task.task_id,
                   editForm)"><i
                     class="material-icons">&#xE254;</i></a>
                 <!-- <a class="delete" title="Delete" data-toggle="tooltip" (click)="deleteEmployee(employee.emp_id)"><i
@@ -131,6 +110,7 @@
           </ul>
         </div> -->
       </div>
+    </div>
 
 
   <!-- Add Modal -->
@@ -144,113 +124,51 @@
         </div>
         <div class="modal-body">
           <!-- <p>Model body text</p> -->
-          <form [formGroup]="addForm" (ngSubmit)="addEmployee()">
+          <form [formGroup]="addForm" (ngSubmit)="addTask()">
             <!-- (ngSubmit)="addEmployee(employeeForm.value) -->
 
             <div class="form-group">
-              <label for="name">First Name
+              <label for="name">Task Name
                 <span class="required-asterisk">*</span>
             </label>
-              <input type="text" class="form-control" id="first_name"  aria-describedby="emailHelp"
-              formControlName="first_name"   placeholder="First Name" name="first_name">
+              <input type="text" class="form-control" id="task_name"  aria-describedby="emailHelp"
+              formControlName="task_name"   placeholder="First Name" name="task_name">
             </div>
 
             <div class="form-group">
-              <label for="name">Last Name
+              <label for="name">Task Description
                 <span class="required-asterisk">*</span>
             </label>
-              <input type="text" class="form-control" id="last_name"  aria-describedby="emailHelp"
-              formControlName="last_name"     placeholder="Last Name" name="last_name">
+              <input type="text" class="form-control" id="task_desc"  aria-describedby="emailHelp"
+              formControlName="task_desc"     placeholder="Last Name" name="task_desc">
             </div>
 
             <div class="form-group">
-              <label for="name">Gender
+              <label for="name">Task Status
                 <span class="required-asterisk">*</span>
             </label>
-              <input type="text" class="form-control" id="gender"  aria-describedby="emailHelp"
-              formControlName="gender"   placeholder="Gender" name="gender">
+              <input type="text" class="form-control" id="task_status"  aria-describedby="emailHelp"
+              formControlName="task_status"   placeholder="Gender" name="task_status">
             </div>
 
             <div class="form-group">
-              <label for="name">Date Of Birth
+              <label for="name">Employee Name
                 <span class="required-asterisk">*</span>
             </label>
-              <input type="date" class="form-control" id="date_of_birth"  aria-describedby="emailHelp"
-              formControlName="date_of_birth"     placeholder="Date of Birth" name="date_of_birth">
+            <select class="form-select" aria-label="Select Plan" formControlName="emp_id" id="emp_id" name="emp_id">
+              <!-- <option [ngValue]="plan.plan_id" *ngFor="let plan of plans">{{plan.plan_name}}</option> -->
+          </select>
             </div>
 
             <div class="form-group">
-              <label for="name">Email
+              <label for="name">Module Name
                 <span class="required-asterisk">*</span>
             </label>
-              <input type="email" class="form-control" id="email"  aria-describedby="emailHelp"
-              formControlName="email"   placeholder="Enter email" name="email">
+              <input type="text" class="form-control" id="module_name"  aria-describedby="emailHelp"
+              formControlName="module_name"   placeholder="Enter email" name="module_name">
             </div>
-
-            <div class="form-group">
-              <label for="name">Contact No.
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control" id="contact_no"  aria-describedby="emailHelp"
-              formControlName="contact_no"   placeholder="Enter phone" name="contact_no">
-            </div>
-
-            <div class="form-group">
-              <label for="name">Designation
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control"  id="designation"  placeholder="Designation"
-              formControlName="designation"   name="designation">
-            </div>
-
-            <div class="form-group">
-              <label for="name">Address Line 1  <span class="required-asterisk">*</span> </label>
-              <input type="text" class="form-control" id="add_line_1"  aria-describedby="emailHelp"
-              formControlName="add_line_1" placeholder="Address line 1" name="add_line_1">
-            </div>
-
-            <div class="form-group">
-              <label for="name">Address Line 2
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control" id="add_line_2"  aria-describedby="emailHelp"
-              formControlName="add_line_2"  placeholder="Address Line 2" name="add_line_2">
-            </div>
-
-            <div class="form-group">
-              <label for="name">City
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control" id="city"  aria-describedby="emailHelp" placeholder="city"
-              formControlName="city"   name="city">
-            </div>
-
-            <div class="form-group">
-              <label for="name">Zipcode
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="number" class="form-control" id="zipcode"  aria-describedby="emailHelp"
-              formControlName="zipcode"    placeholder="Zipcode" name="zipcode">
-            </div>
-
-            <div class="form-group">
-              <label for="name">State
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control" id="state"  aria-describedby="emailHelp"
-              formControlName="state"   placeholder="State" name="state">
-            </div>
-
-            <div class="form-group">
-              <label for="name">Country
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control" id="country"  aria-describedby="emailHelp"
-              formControlName="country"   placeholder="Country" name="country">
-            </div>
-
             <button type="submit" data-toggle="modal" data-target="#personModal" class="btn btn-primary"
-            (click)="addEmployee()">Submit</button>
+            (click)="addTask()">Submit</button>
           </form>
         </div>
         <div class="modal-footer">
@@ -276,122 +194,55 @@
           <!-- <p>Model body text</p> -->
           <form [formGroup]="editForm" (ngSubmit)="editTask1()">
             <div class="form-group">
-              <label for="designation">Employee ID</label>
-              <input #emp_id type="text" class="form-control"
-              formControlName="emp_id" id="emp_id" placeholder="empid" name="emp_id">
-            </div>
+             <label for="name">Task Name
+               <span class="required-asterisk">*</span>
+           </label>
+             <input type="text" class="form-control" id="task_name"  aria-describedby="emailHelp"
+             formControlName="task_name"   placeholder="First Name" name="task_name">
+           </div>
 
-            <div class="form-group">
-              <label for="name">First Name
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control" id="first_name"  aria-describedby="emailHelp"
-              formControlName="first_name"   placeholder="First Name" name="first_name">
-            </div>
+           <div class="form-group">
+             <label for="name">Task Description
+               <span class="required-asterisk">*</span>
+           </label>
+             <input type="text" class="form-control" id="task_desc"  aria-describedby="emailHelp"
+             formControlName="task_desc"     placeholder="Last Name" name="task_desc">
+           </div>
 
-            <div class="form-group">
-              <label for="name">Last Name
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control" id="last_name"  aria-describedby="emailHelp"
-              formControlName="last_name"     placeholder="Last Name" name="last_name">
-            </div>
+           <div class="form-group">
+             <label for="name">Task Status
+               <span class="required-asterisk">*</span>
+           </label>
+             <input type="text" class="form-control" id="task_status"  aria-describedby="emailHelp"
+             formControlName="task_status"   placeholder="Gender" name="task_status">
+           </div>
 
-            <div class="form-group">
-              <label for="name">Gender
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control" id="gender"  aria-describedby="emailHelp"
-              formControlName="gender"   placeholder="Gender" name="gender">
-            </div>
+           <div class="form-group">
+             <label for="name">Employee Name
+               <span class="required-asterisk">*</span>
+           </label>
+           <select class="form-select" aria-label="Select Plan" formControlName="emp_id" id="emp_id" name="emp_id">
+             <!-- <option [ngValue]="plan.plan_id" *ngFor="let plan of plans">{{plan.plan_name}}</option> -->
+         </select>
+           </div>
 
-            <div class="form-group">
-              <label for="name">Date Of Birth
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="date" class="form-control" id="date_of_birth"  aria-describedby="emailHelp"
-              formControlName="date_of_birth"     placeholder="Date of Birth" name="date_of_birth">
-            </div>
-
-            <div class="form-group">
-              <label for="name">Email
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="email" class="form-control" id="email"  aria-describedby="emailHelp"
-              formControlName="email"   placeholder="Enter email" name="email">
-            </div>
-
-            <div class="form-group">
-              <label for="name">Contact No.
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control" id="contact_no"  aria-describedby="emailHelp"
-              formControlName="contact_no"   placeholder="Enter phone" name="contact_no">
-            </div>
-
-            <div class="form-group">
-              <label for="name">Designation
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control"  id="designation"  placeholder="Designation"
-              formControlName="designation"   name="designation">
-            </div>
-
-            <div class="form-group">
-              <label for="name">Address Line 1  <span class="required-asterisk">*</span> </label>
-              <input type="text" class="form-control" id="add_line_1"  aria-describedby="emailHelp"
-              formControlName="add_line_1" placeholder="Address line 1" name="add_line_1">
-            </div>
-
-            <div class="form-group">
-              <label for="name">Address Line 2
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control" id="add_line_2"  aria-describedby="emailHelp"
-              formControlName="add_line_2"  placeholder="Address Line 2" name="add_line_2">
-            </div>
-
-            <div class="form-group">
-              <label for="name">City
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control" id="city"  aria-describedby="emailHelp" placeholder="city"
-              formControlName="city"   name="city">
-            </div>
-
-            <div class="form-group">
-              <label for="name">Zipcode
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="number" class="form-control" id="zipcode"  aria-describedby="emailHelp"
-              formControlName="zipcode"    placeholder="Zipcode" name="zipcode">
-            </div>
-
-            <div class="form-group">
-              <label for="name">State
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control" id="state"  aria-describedby="emailHelp"
-              formControlName="state"   placeholder="State" name="state">
-            </div>
-
-            <div class="form-group">
-              <label for="name">Country
-                <span class="required-asterisk">*</span>
-            </label>
-              <input type="text" class="form-control" id="country"  aria-describedby="emailHelp"
-              formControlName="country"   placeholder="Country" name="country">
-            </div>
-            <button type="submit" data-toggle="modal" data-target="#personModal" class="btn btn-primary"
-            (click)="editTask1()">Submit</button>
-          </form>
+           <div class="form-group">
+             <label for="name">Module Name
+               <span class="required-asterisk">*</span>
+           </label>
+             <input type="text" class="form-control" id="module_name"  aria-describedby="emailHelp"
+             formControlName="module_name"   placeholder="Enter email" name="module_name">
+           </div>
+           <button type="submit" data-toggle="modal" data-target="#personModal" class="btn btn-primary"
+           (click)="editTask1()">Submit</button>
+         </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" (click)="onCloseHandledEdit()">Close</button>
         </div>
       </div>
     </div>
-  </div>
+  </div></div>
   <!-- end edit Modal -->
 </body>
 

@@ -20,6 +20,12 @@ export class TaskComponent implements OnInit {
   data: any;
   taskOne: any;
   taskData: any;
+  p : any =1 ;
+  choiceName: any;
+  selected: any;
+  tname: any;
+  tvalue: any;
+  choices: any = ['Task_Name', 'Status','Emp_name'];
   addForm: FormGroup;
   editForm: FormGroup;
   constructor(
@@ -33,39 +39,20 @@ export class TaskComponent implements OnInit {
     this.getallTasks();
 
     this.addForm = new FormGroup({
-      'add_line_1': new FormControl(null),
-      'add_line_2': new FormControl(null),
-      'city': new FormControl(null),
-      'zipcode': new FormControl(null),
-      'state': new FormControl(null),
-      'country': new FormControl(null),
-      'first_name':new FormControl(null),
-      'last_name': new FormControl(null),
-      'gender': new FormControl(null),
-      'date_of_birth': new FormControl(null),
-      'email': new FormControl(null),
-      'contact_no': new FormControl(null),
-      'designation': new FormControl(null)
-
+      'task_name': new FormControl(null),
+      'task_desc': new FormControl(null),
+      'task_status': new FormControl(null),
+      'emp_id': new FormControl(null),
+      'module_name': new FormControl(null)
     })
 
 
     this.editForm = new FormGroup({
-      'emp_id': new FormControl(),
-      'add_line_1': new FormControl(),
-      'add_line_2': new FormControl(),
-      'city': new FormControl(),
-      'zipcode': new FormControl(),
-      'state': new FormControl(),
-      'country': new FormControl(),
-      'first_name':new FormControl(),
-      'last_name': new FormControl(),
-      'gender': new FormControl(),
-      'date_of_birth': new FormControl(),
-      'email': new FormControl(),
-      'contact_no': new FormControl(),
-      'designation': new FormControl()
-
+      'task_name': new FormControl(null),
+      'task_desc': new FormControl(null),
+      'task_status': new FormControl(null),
+      'emp_id': new FormControl(null),
+      'module_name': new FormControl(null)
     })
 
 
@@ -105,7 +92,7 @@ export class TaskComponent implements OnInit {
   }
 
 
-  addEmployee() {
+  addTask() {
     console.log("hi");
     // console.log(empData);
     this.taskService.createTask(this.addForm.value)
@@ -148,22 +135,12 @@ export class TaskComponent implements OnInit {
         this.taskOne = result;
 
         const controls = editForm.controls;
-
-        controls.emp_id.setValue(result.emp_id);
-        controls.first_name.setValue(result.person.first_name);
-        controls.last_name.setValue(result.person.last_name);
-        controls.last_name.setValue(result.person.last_name);
-        controls.gender.setValue(result.person.gender);
-        controls.date_of_birth.setValue(result.person.date_of_birth);
-        controls.email.setValue(result.person.email);
-        controls.contact_no.setValue(result.person.contact_no);
-        controls.add_line_1.setValue(result.address.add_line_1);
-        controls.add_line_2.setValue(result.address.add_line_2);
-        controls.city.setValue(result.address.city);
-        controls.state.setValue(result.address.state);
-        controls.zipcode.setValue(result.address.zipcode);
-        controls.country.setValue(result.address.country);
-        controls.designation.setValue(result.designation);
+        controls.task_id.setValue(result.task_id);
+        controls.task_name.setValue(result.task_name);
+        controls.task_desc.setValue(result.task_desc);
+        controls.task_status.setValue(result.task_status);
+        controls.module_name.setValue(result.module_name);
+        controls.task_id.setValue(result.task_id);
       },
       error => {
         this.errors = error
@@ -190,5 +167,52 @@ export class TaskComponent implements OnInit {
       this.getallTasks();
       this.router.navigate(['tasks']);
       }
+
+
+
+
+//       getChoice() {
+
+//         this.ename = this.selectForm.get('choiceName').value;
+//         this.evalue = this.selectForm.get('choiceValue').value;
+//         //console.log(this.cname);
+//         console.log(this.evalue);
+//         if (this.ename == "First_Name") {
+//           this.employeeService.onEmpSearch('first_name', this.evalue).subscribe(
+//             result => {
+//               console.log(result);
+//               this.employees = result;
+//             },
+//             error => {
+//               this.errors = error
+//             });
+
+//         }
+//         else if (this.ename == "City") {
+
+//           this.employeeService.onEmpSearch('city', this.evalue).subscribe(
+//             result => {
+//               console.log(result);
+//               this.employees = result;
+//             },
+//             error => {
+//               this.errors = error
+//             });
+
+//         }
+
+//         else {
+
+//           this.employeeService.onEmpSearch('designation', this.evalue).subscribe(
+//             result => {
+//               console.log(result);
+//               this.employees = result;
+//             },
+//             error => {
+//               this.errors = error
+//             });
+
+//         }
+// }
 
 }
